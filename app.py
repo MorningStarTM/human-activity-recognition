@@ -5,6 +5,10 @@ import pickle
 
 app = Flask(__name__)
 
+class_names = ['downstairs', 'jogging', 'sitting', "standing", "upstairs", "walking", "Activity_1",
+                  "Activity_2", "Activity_3"]
+
+
 @app.route('/')
 def home():
     return 'Welcome to CADS'
@@ -15,9 +19,9 @@ def predict():
     df = pd.DataFrame(data, index=False)
     file = open("E:\\github_clone\\human-activity-recognition\\models\\SVC_model.pkl", 'rb')
     model = pickle.load(file)
-    prediction = model.predict(df)
-    print(prediction)
-    return prediction
+    prediction = model.predict(df)[0]
+    print(class_names[prediction])
+    return prediction, class_names[prediction]
 
 if __name__ == "__main__":
     app.run(debug=True)
